@@ -887,6 +887,11 @@ export interface Image {
 	filename?: string;
 	buffer?: Buffer;
 }
+export interface Chart {
+	chart: string;
+	style: string;
+	colors: string;
+}
 export interface IAnchor {
 	col: number;
 	row: number;
@@ -1341,6 +1346,18 @@ export interface Worksheet {
 		range: ImageRange;
 	}>;
 
+	/**
+	 * Using the chart id from `Workbook.addChart`,
+	 * embed an chart within the worksheet to cover a range
+	 */
+	 addChart(chartId: number, range: string | { editAs?: string; } & ImageRange | { editAs?: string; } & ImagePosition ): void;
+
+	 getCharts(): Array<{
+		 type: 'chart',
+		 chartId: string;
+		 range: ImageRange;
+	 }>;
+
 	commit(): void;
 
 	model: WorksheetModel;
@@ -1759,7 +1776,14 @@ export class Workbook {
 	 */
 	addImage(img: Image): number;
 
+	/**
+	 * Add Chart to Workbook and return the id
+	 */
+	addChart(img: Chart): number;
+
 	getImage(id: number): Image;
+
+	getChart(id: number): Image;
 }
 
 export interface TableStyleProperties {
